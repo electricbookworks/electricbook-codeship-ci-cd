@@ -96,7 +96,7 @@ then
     then
         rsync -a -v --stats --progress "$HOME/cache/_site/" "$SSH_LIVE":"$DESTINATIONPATH_LIVE"
     else
-        lftp -c "open -u $FTP_USER_LIVE,$FTP_PASSWORD_LIVE $FTP_HOST_LIVE; set ssl:verify-certificate no; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_LIVE'"
+        lftp -d -c "open -u $FTP_USER_LIVE,$FTP_PASSWORD_LIVE $FTP_HOST_LIVE; set ssl:verify-certificate no; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_LIVE'"
     fi
     echo "Live site deployed."
 
@@ -119,7 +119,7 @@ else
         else
             # If your server can't handle a queue of FTP commands,
             # you may need to remove `set ftp:sync-mode false;`
-            lftp -c "open -u $FTP_USER_PREVIEWS,$FTP_PASSWORD_PREVIEWS $FTP_HOST_PREVIEWS; set ssl:verify-certificate no; set ftp:sync-mode false; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_PREVIEWS/$tag'"
+            lftp -d -c "open -u $FTP_USER_PREVIEWS,$FTP_PASSWORD_PREVIEWS $FTP_HOST_PREVIEWS; set ssl:verify-certificate no; set ftp:sync-mode false; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_PREVIEWS/$tag'"
         fi
     else
         if [[ $DEPLOY_METHOD_STAGING == 'SSH' ]]
@@ -128,7 +128,7 @@ else
         else
             # If your server can't handle a queue of FTP commands,
             # you may need to remove `set ftp:sync-mode false;`
-            lftp -c "open -u $FTP_USER_STAGING,$FTP_PASSWORD_STAGING $FTP_HOST_STAGING; set ssl:verify-certificate no; set ftp:sync-mode false; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_STAGING'"
+            lftp -d -c "open -u $FTP_USER_STAGING,$FTP_PASSWORD_STAGING $FTP_HOST_STAGING; set ssl:verify-certificate no; set ftp:sync-mode false; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_STAGING'"
         fi
     fi
     echo "Staging site deployed."
