@@ -85,7 +85,7 @@ else
 
     # Prevent timeouts by sending something to the terminal.
     # 300 seconds ten times is 50 minutes.
-    function prevent_terminal_timeout() { ( for i in {1..10}; do echo "Preventing timeout by echoing every 300 seconds"; sleep 300; done ) & local pid=$!; trap 'kill ${pid}' SIGINT SIGTERM EXIT; } 
+    function prevent_terminal_timeout() { ( for i in {1..100}; do echo "Preventing timeout by echoing every 300 seconds"; sleep 300; done ) & local pid=$!; trap 'kill ${pid}' SIGINT SIGTERM EXIT; } 
     prevent_terminal_timeout &
 
     # If this has a _config.yml file, assume Jekyll and build,
