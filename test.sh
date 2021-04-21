@@ -80,6 +80,11 @@ then
 # Otherwise, build the site.
 else
 
+    # Clear the cache of any previous builds
+    # https://docs.cloudbees.com/docs/cloudbees-codeship/latest/basic-builds-and-configuration/dependency-cache#_clearing_the_cache
+    echo "Deleting previous builds from the cache..."
+    cs clear-cache
+
     # Build the site
     echo "Building the site..."
 
