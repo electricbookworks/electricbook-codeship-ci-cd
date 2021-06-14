@@ -80,12 +80,27 @@ then
 # Otherwise, build the site.
 else
 
+    # Clear the cache of any previous builds
+    # https://docs.cloudbees.com/docs/cloudbees-codeship/latest/basic-builds-and-configuration/dependency-cache#_clearing_the_cache
+    # but we use a more direct approach to only delete the contents
+    # of the _site folder, while avoiding the dangerous rm-rf.
+    echo "Deleting previous builds from the cache..."
+    find "$HOME/cache/_site" -mindepth 1 -delete
+
+    # Check if cache is now empty
+    if [ -n "$(ls -A $HOME/cache/_site)" ]; then
+        echo "Warning: cache not emptied. Your site may include artefacts from previous builds."
+    else
+        echo "Cache is now empty."
+    fi
+
+
     # Build the site
     echo "Building the site..."
 
     # Prevent timeouts by sending something to the terminal.
     # 300 seconds ten times is 50 minutes.
-    function prevent_terminal_timeout() { ( for i in {1..100}; do echo "Preventing timeout by echoing every 300 seconds"; sleep 300; done ) & local pid=$!; trap 'kill ${pid}' SIGINT SIGTERM EXIT; } 
+    function prevent_terminal_timeout() { ( for i in {1..100}; do echo "Preventing timeout by echoing every 300 seconds"; sleep 300; done ) & local pid=$!; trap 'kill ${pid}' SIGINT SIGTERM EXIT; }
     prevent_terminal_timeout &
 
     # If this has a _config.yml file, assume Jekyll and build,
