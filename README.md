@@ -112,9 +112,9 @@ To deploy a preview to the staging server, you'll use git tags that start with `
    # E.g. if you're updating the `more-potatoes` preview to a later commit.
    git tag -a preview-more-potatoes -f -m "A short description"
 
-   # Push the tags.
+   # Push the tag.
    # Again, the -f forces git to update an existing tag on the remote.
-   git push --tags -f
+   git push preview-more-potatoes -f
    ```
 
 - If you are working in a fork (don't type the `#` comment lines):
@@ -130,7 +130,7 @@ To deploy a preview to the staging server, you'll use git tags that start with `
 
    # Push the tags.
    # Again, the -f forces git to update an existing tag on the remote.
-   git push upstream --tags -f
+   git push upstream preview-more-potatoes -f
    ```
 
 CodeShip will spot your tag, build the site and run the tests, and then deploy the site to your staging server in a directory named for your tag, e.g. `example.com/preview-more-potatoes/`.
