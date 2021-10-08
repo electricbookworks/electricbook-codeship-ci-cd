@@ -83,7 +83,8 @@ committer=$(git show --format="%aN <%aE>" $commit)
 timestamp=$(date +%Y-%m-%d:%H-%M-%S)
 
 # Set the path and name for the deploy-version file
-versionFile="$HOME/cache/_site/deploy-version-$commit.txt"
+version_file="$HOME/cache/_site/deploy-version-$commit.txt"
+
 # Set the default SSH port
 ssh_port="22"
 
@@ -94,8 +95,8 @@ if [[ $tag* =~ ^release.*$ ]]
 then
 
     # Add the release tag name and new date to the deploy-version file
-    echo "Release tag: $tag" >> "$versionFile"
-    echo "Deployed to live: $timestamp" >> "$versionFile"
+    echo "Release tag: $tag" >> "$version_file"
+    echo "Deployed to live: $timestamp" >> "$version_file"
 
     # Sync the cached built files to the live server
     echo "Deploying $tag to live server..."
@@ -118,9 +119,9 @@ else
 
     # Write to a deploy-version file, named for the commit
     # and containing a timestamp.
-    echo "Last commit: $commit" >> "$versionFile"
-    echo "Last commit by: $committer" >> "$versionFile"
-    echo "Deployed to staging: $timestamp" >> "$versionFile"
+    echo "Last commit: $commit" >> "$version_file"
+    echo "Last commit by: $committer" >> "$version_file"
+    echo "Deployed to staging: $timestamp" >> "$version_file"
 
     # Sync the built files to the staging server.
     # If it's a preview, deploy to the preview folder.
