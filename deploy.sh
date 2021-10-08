@@ -23,6 +23,12 @@
 # SSH_LIVE
 # SSH_PREVIEWS
 
+# Optionally, if your host
+# uses a non-standard SSH port
+# SSH_STAGING_PORT
+# SSH_LIVE_PORT
+# SSH_PREVIEWS_PORT
+
 # If using FTP:
 # FTP_HOST_LIVE
 # FTP_USER_LIVE
@@ -78,6 +84,8 @@ timestamp=$(date +%Y-%m-%d:%H-%M-%S)
 
 # Set the path and name for the deploy-version file
 versionFile="$HOME/cache/_site/deploy-version-$commit.txt"
+# Set the default SSH port
+ssh_port="22"
 
 # If the tag starts with 'release',
 # then deploy the latest build to live (i.e. production).
@@ -94,7 +102,13 @@ then
 
     if [[ $DEPLOY_METHOD_LIVE == "SSH" ]]
     then
-        rsync -a -v --stats --progress "$HOME/cache/_site/" "$SSH_LIVE":"$DESTINATIONPATH_LIVE"
+
+        if [[ -n $SSH_LIVE_PORT ]]
+        then
+            ssh_port=$SSH_LIVE_PORT
+        fi
+
+        rsync -a -v -e "ssh -p $ssh_port" --stats --progress "$HOME/cache/_site/" "$SSH_LIVE":"$DESTINATIONPATH_LIVE"
     else
         lftp -d -c "open -u $FTP_USER_LIVE,$FTP_PASSWORD_LIVE $FTP_HOST_LIVE; set ssl:verify-certificate no; mirror -Rv '$HOME/cache/_site/' '$DESTINATIONPATH_LIVE'"
     fi
@@ -115,7 +129,13 @@ else
     then
         if [[ $DEPLOY_METHOD_PREVIEWS == 'SSH' ]]
         then
-            rsync -a -v --stats --progress "$HOME/cache/_site/" "$SSH_PREVIEWS":"$DESTINATIONPATH_PREVIEWS/$tag"
+
+            if [[ -n $SSH_PREVIEWS_PORT ]]
+            then
+                ssh_port=$SSH_PREVIEWS_PORT
+            fi
+
+            rsync -a -v -e "ssh -p $ssh_port" --stats --progress "$HOME/cache/_site/" "$SSH_PREVIEWS":"$DESTINATIONPATH_PREVIEWS/$tag"
         else
             # If your server can't handle a queue of FTP commands,
             # you may need to remove `set ftp:sync-mode false;`
@@ -124,7 +144,13 @@ else
     else
         if [[ $DEPLOY_METHOD_STAGING == 'SSH' ]]
         then
-            rsync -a -v --stats --progress "$HOME/cache/_site/" "$SSH_STAGING":"$DESTINATIONPATH_STAGING"
+
+            if [[ -n $SSH_STAGING_PORT ]]
+            then
+                ssh_port=$SSH_STAGING_PORT
+            fi
+
+            rsync -a -v -e "ssh -p $ssh_port" --stats --progress "$HOME/cache/_site/" "$SSH_STAGING":"$DESTINATIONPATH_STAGING"
         else
             # If your server can't handle a queue of FTP commands,
             # you may need to remove `set ftp:sync-mode false;`
