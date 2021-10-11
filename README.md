@@ -82,6 +82,9 @@ This is a workflow for deploying Jekyll sites with CodeShip Basic. It follows go
 | SSH_STAGING              | staginguser@staging.example.com  |               | Not required if using FTP.                                                                                      |
 | SSH_LIVE                 | liveuser@example.com             |               | Not required if using FTP.                                                                                      |
 | SSH_PREVIEWS             | previewuser@previews.example.com |               | Not required if using FTP.                                                                                      |
+| SSH_STAGING_PORT         | 2222                             |               | Only required if your staging-site host uses a non-standard SSH port (i.e. not port 22)                         |
+| SSH_LIVE_PORT            | 2222                             |               | Only required if your live-site host uses a non-standard SSH port (i.e. not port 22)                            |
+| SSH_PREVIEWS_PORT        | 2222                             |               | Only required if your previews site host uses a non-standard SSH port (i.e. not port 22)                        |
 | FTP_HOST_LIVE            | example.com                      | 42.653.343.33 | Not required if using SSH.                                                                                      |
 | FTP_USER_LIVE            | dkufh7fhrf                       | jo@mysite     | Not required if using SSH.                                                                                      |
 | FTP_PASSWORD_LIVE        | kfuh4i87f3ufhr7f743hf            |               | Not required if using SSH.                                                                                      |
