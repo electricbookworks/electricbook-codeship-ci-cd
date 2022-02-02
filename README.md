@@ -56,7 +56,7 @@ This is a workflow for deploying Jekyll sites with CodeShip Basic. It follows go
 
    By default, this will build and deploy to the staging server any further changes committed/merged to the live branch.
 
-6. **Build triggers:** Next, set the Build Triggers. You want to run builds on the branch you're deploying (e.g. `live`), and on `^preview.*$` and  `^release.*$`, which is any branch *or tag* that starts with 'preview' and 'release', respectively. (For Git purposes, a tag is a branch, but without any further commits). So add these three lines to the 'Enter one branch per line' box:
+6. **Build triggers:** Next, set the Build Triggers. You want to run builds on the branch you're deploying (e.g. `live`), and on `^preview.*$` and  `^release.*$`, which is any branch *or tag* that starts with 'preview' and 'release', respectively. (For Git purposes, a tag is a branch, but without any further commits). To do this, select 'Run builds for these branches only', and add these three lines to the 'Enter one branch per line' box:
 
    ``` sh
    live
