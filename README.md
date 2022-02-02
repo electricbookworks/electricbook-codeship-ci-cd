@@ -21,7 +21,7 @@ This is a workflow for deploying Jekyll sites with CodeShip Basic. It follows go
       rvm @global do gem uninstall -x -a bundler
 
       # Install version 2.0.2 of Bundler
-      gem install bundler -v 2.1.4
+      gem install bundler -v 2.2.19
       ```
 
     You can change the version number there as appropriate for your project.
