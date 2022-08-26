@@ -117,6 +117,23 @@ else
         # Otherwise, build the live site.
         else
             bundle exec jekyll build --config="_config.yml,_configs/_config.live.yml"
+
+            # If this project includes our Node check script, run it
+            if [ -f _tools/run/commands/check.js ];
+            then
+                npm run electric-book -- check
+
+                # This script will store any exit code from a script as $?.
+                # If that exit code is > 0, that's a fail and we must exit.
+                # Note we convert the string exit code to an integer with $(()).
+                checkResult=$(($?))
+                if [[ $checkResult -gt 0 ]];
+                then
+                    echo Project checks failed, exiting.
+                    exit
+                fi
+            fi
+
         fi
     else
         mkdir -p _site/book/images/web

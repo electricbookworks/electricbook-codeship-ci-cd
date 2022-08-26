@@ -26,7 +26,13 @@ This is a workflow for deploying Jekyll sites with CodeShip Basic. It follows go
 
     You can change the version number there as appropriate for your project.
 
-   2. Then under 'Configure Test Pipelines', click 'Add Pipeline' and add a tab called 'Test Commands'. In that tab, add these lines:
+   2. If your project uses the latest Electric Book Template, you also need CodeShip to install Node modules. To do this, add this line after `bundle install`:
+
+      ```sh
+      npm install
+      ```
+
+   3. Then under 'Configure Test Pipelines', click 'Add Pipeline' and add a tab called 'Test Commands'. In that tab, add these lines:
 
       ``` sh
       # Give permission for the script to run
