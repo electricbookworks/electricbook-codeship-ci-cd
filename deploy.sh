@@ -70,7 +70,7 @@ then
 fi
 
 # Get the short hash of the latest commit
-commit=$(git log --pretty=format:"%h" -n 1^ 2>&1)
+commit=$(git rev-parse --short=7 HEAD 2>&1)
 
 # Get the tag on the last commit
 tag=$(git describe --tags --exact-match $commit 2>&1)
