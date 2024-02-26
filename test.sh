@@ -27,7 +27,7 @@ fi
 echo "Branch: $branch"
 
 # Get the short hash of the latest commit
-commit=$(git log --pretty=format:"%h" -n 1^ 2>&1)
+commit=$(git rev-parse --short=7 HEAD 2>&1)
 echo "Commit: $commit"
 
 # Get the tag on the last commit
