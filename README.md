@@ -9,30 +9,37 @@ This is a workflow for deploying Jekyll sites with CodeShip Basic. It follows go
 ## Setup
 
 1. **SSH access:** If you want to use SSH, for the fastest deployments, ensure you have SSH access to your preview, staging and live webservers. On some web hosts, SSH access must be requested and enabled by support. You may still need to do this for your domain. Otherwise, deployment will use FTP.
-2. **Add the scripts:** Make sure your repo includes the `test.sh` and `deploy.sh` scripts here. They should be in the repo's root folder. In addition, our scripts assume that your repo includes an up-to-date `_configs/_config.live.yml` file, containing any configuration settings for live builds.
+2. **Add the files:** Make sure your repo includes the `test.sh`, `deploy.sh`, and `.ruby-version` files here. They should be in the repo's root folder. In addition, our scripts assume that your repo includes an up-to-date `_configs/_config.live.yml` file, containing any configuration settings for live builds.
 3. **Add a CodeShip project:** Add a project to CodeShip and connect your repo. Choose 'CodeShip Basic' for your project type, not 'Pro'.
-4. **Tests:** In the CodeShip project settings, go to Tests. Choose 'Ruby' from the list of technology defaults. Note: if you are setting up a site that does not build with Jekyll, such as an Electric Book remote-media repo, you can leave the Setup Commands blank.
+4. **Tests:** In the CodeShip project settings, go to Tests. Choose 'Ruby' from the list of technology defaults.
 
-   1. Under 'Setup commands' you *may* need to include commands that set up the environment (i.e. the machine that builds your site) correctly. By default, CodeShip will include `bundle install` here. For instance, if your site's `Gemfile.lock` has been generated with Bundler 2 (see the end of the `Gemfile.lock` to check), you need to install Bundler 2. To do this, add these lines before `bundle install`:
+   1. Under 'Setup commands', replace the template code with this:
 
       ``` sh
+      # Use the Ruby version in the `.ruby-version` file
+      if [ -f .ruby-version ]; then rvm use $(cat .ruby-version) --install; fi
+      
+      # Update RubyGems to the latest compatible release
+      gem update --system
+      
       # Uninstall any local and global bundler installations
       gem uninstall -x -a bundler
       rvm @global do gem uninstall -x -a bundler
-
+      
       # Install newer version of Bundler
-      gem install bundler -v 2.2.19
-      ```
-
-    You can change the version number there as appropriate for your project.
-
-   2. If your project uses the latest Electric Book Template, you also need CodeShip to install Node modules. To do this, add this line after `bundle install`:
-
-      ```sh
+      gem install bundler -v 2.6.9
+      
+      # Install dependencies
+      bundle install
       npm install
+
       ```
 
-   3. Then under 'Configure Test Pipelines', click 'Add Pipeline' and add a tab called 'Test Commands'. In that tab, add these lines:
+      You can change the version numbers there and in the `.ruby-version` file as appropriate for your project.
+
+      Note that older versions of the Electric Book Template do not need the `npm install`. Removing it will speed up builds.
+
+   2. Then under 'Configure Test Pipelines', click 'Add Pipeline' and add a tab called 'Test Commands'. In that tab, add these lines:
 
       ``` sh
       # Give permission for the script to run
